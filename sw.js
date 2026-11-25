@@ -1,5 +1,5 @@
 /* Service worker: precarga la app para uso sin conexion. */
-const CACHE = 'hsk-flash-v4';
+const CACHE = 'hsk-flash-v5';
 const ASSETS = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/app.js', 'js/vocab.js', 'js/store.js', 'js/srs.js', 'js/session.js',
@@ -64,7 +64,7 @@ async function maybeNotify() {
   const goal = s.dailyGoal || 30;
   if (done >= goal) return;
   if (now.getHours() < (s.reminderHour || 20)) return;
-  await self.registration.showNotification('HSK Flash', {
+  await self.registration.showNotification('HSK Máster', {
     body: `Te faltan ${goal - done} tarjetas para la meta de hoy.`,
     icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', tag: 'hsk-daily',
   });

@@ -126,6 +126,15 @@ export class Session {
     const single = modes.filter((m) => m !== 'match');
     const steps = [];
     const q = this.words.slice();
+    if (hasMatch && single.length === 0) {
+      // Solo emparejar: grupos de hasta 6, repartidos para no dejar uno suelto.
+      const n = Math.ceil(q.length / 6);
+      for (let g = 0; g < n; g++) {
+        const size = Math.ceil(q.length / (n - g));
+        steps.push({ mode: 'match', words: q.splice(0, size) });
+      }
+      return steps;
+    }
     while (q.length) {
       // si solo hay emparejar, o toca emparejar y quedan >=4 palabras
       const useMatch = hasMatch && q.length >= 4 &&
@@ -133,7 +142,7 @@ export class Session {
       if (useMatch) {
         steps.push({ mode: 'match', words: q.splice(0, Math.min(6, q.length)) });
       } else {
-        const m = single.length ? single[(Math.random() * single.length) | 0] : 'clasica';
+        const m = single[(Math.random() * single.length) | 0];
         steps.push({ mode: m, words: [q.shift()] });
       }
     }
@@ -150,7 +159,23 @@ export class Session {
   requeue(word, mode) {
     if (this.again.includes(word[F.N])) return;
     this.again.push(word[F.N]);
-    this.steps.push({ mode: mode === 'match' ? 'clasica' : mode, words: [word], retry: true });
+    if (mode !== 'match') {
+      this.steps.push({ mode, words: [word], retry: true });
+      return;
+    }
+    const single = this.cfg.modes.filter((m) => m !== 'match');
+    if (single.length) {
+      // Repesca de un fallo de emparejar con otra de las modalidades elegidas.
+      this.steps.push({ mode: single[(Math.random() * single.length) | 0], words: [word], retry: true });
+      return;
+    }
+    // Solo emparejar: los fallos se agrupan en una ronda de repesca de emparejar.
+    const last = this.steps[this.steps.length - 1];
+    if (last.retry && last.mode === 'match' && this.steps.length - 1 > this.i && last.words.length < 6) {
+      last.words.push(word);
+    } else {
+      this.steps.push({ mode: 'match', words: [word], retry: true });
+    }
   }
 
   elapsed() { return this.ms + (this.paused ? 0 : Date.now() - this.t0); }
