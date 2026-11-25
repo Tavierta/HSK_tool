@@ -1,10 +1,11 @@
 /* Service worker: precarga la app para uso sin conexion. */
-const CACHE = 'hsk-flash-v1';
+const CACHE = 'hsk-flash-v2';
 const ASSETS = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/app.js', 'js/vocab.js', 'js/store.js', 'js/srs.js', 'js/session.js',
   'js/modes.js', 'js/stats.js', 'js/ui.js', 'js/pinyin.js', 'js/wordsheet.js',
   'icons/icon.svg', 'icons/favicon.svg',
+  'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png',
 ];
 
 self.addEventListener('install', (e) => {
@@ -64,7 +65,7 @@ async function maybeNotify() {
   if (now.getHours() < (s.reminderHour || 20)) return;
   await self.registration.showNotification('HSK Flash', {
     body: `Te faltan ${goal - done} tarjetas para la meta de hoy.`,
-    icon: 'icons/icon.svg', badge: 'icons/icon.svg', tag: 'hsk-daily',
+    icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', tag: 'hsk-daily',
   });
 }
 
