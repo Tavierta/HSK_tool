@@ -20,6 +20,8 @@ export const DEFAULTS = {
   showNote: true,
   showPinyinFront: false,  // mostrar pinyin en la cara frontal
   reviewDays: 0,           // 0 = las aprendidas no vuelven solas
+  defLang: 'es',           // idioma de las definiciones: es | en
+  showOtherLang: false,    // mostrar tambien la definicion en el otro idioma
 };
 
 let db = null;

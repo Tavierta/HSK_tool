@@ -7,6 +7,8 @@ import { StudyView, summary } from './modes.js';
 import { wordSheet, levelBadge, masteryBar } from './wordsheet.js';
 import { mastery } from './srs.js';
 import * as St from './stats.js';
+import { def, esOf, enOf, LANGS } from './lang.js';
+import { VERSION } from './version.js';
 
 const app = {};
 let view = 'home';
@@ -298,7 +300,7 @@ function screenVocab() {
       if (state.estado === 'falladas' && !(r && r.ko > 0)) continue;
       if (state.estado === 'dificiles' && !(r && r.H)) continue;
       if (q && !(w[F.HANZI].includes(q) || w[F.PINYIN].toLowerCase().includes(q)
-        || w[F.EN].toLowerCase().includes(q)
+        || enOf(w).toLowerCase().includes(q) || fold(esOf(w)).includes(fold(q))
         || w[F.PINYIN].normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().includes(q))) continue;
       out.push(w);
     }
@@ -325,7 +327,7 @@ function screenVocab() {
         h('span', { class: 'vr-h', text: w[F.HANZI] }),
         h('span', { class: 'vr-mid' }, [
           pinyinEl(w[F.PINYIN]),
-          h('span', { class: 'vr-en', text: w[F.EN] }),
+          h('span', { class: 'vr-en', text: def(w) }),
         ]),
         h('span', { class: 'vr-side' }, [
           h('span', { class: 'badge lv' + w[F.LVL], text: 'HSK ' + w[F.LVL] }),
@@ -389,6 +391,20 @@ function num(key, min, max, step, onChange, suffix = '') {
   return h('div', { class: 'slider' }, [i, out]);
 }
 
+const fold = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+/** Version de la app y del service worker activo, para comprobar que llego la actualizacion. */
+function versionEl() {
+  const p = h('p', { class: 'hint version', text: `Versión ${VERSION}` });
+  if ('caches' in window) {
+    caches.keys().then((ks) => {
+      const c = ks.find((k) => k.startsWith('hsk-flash-'));
+      if (c) p.textContent = `Versión ${VERSION} · caché ${c.replace('hsk-flash-', '')}`;
+    }).catch(() => {});
+  }
+  return p;
+}
+
 function screenSettings() {
   clear(main()).append(
     h('h2', { class: 'h2', text: 'Ajustes' }),
@@ -402,6 +418,11 @@ function screenSettings() {
       row('Mostrar categoría gramatical', toggle('showPos')),
       row('Mostrar notas del HSK', toggle('showNote'), 'Avisos del tipo "more uses at HSK 4"'),
       row('Pinyin visible en la cara frontal', toggle('showPinyinFront'), 'Hace las tarjetas más fáciles'),
+    ]),
+
+    h('section', {}, [h('h3', { text: 'Idioma' }),
+      row('Definiciones en', pick(LANGS, S.settings.defLang, async (v) => { await S.saveSettings({ defLang: v }); })),
+      row('Mostrar también el otro idioma', toggle('showOtherLang'), 'Añade la traducción en el otro idioma en la tarjeta y en la ficha'),
     ]),
 
     h('section', {}, [h('h3', { text: 'Aprendizaje' }),
@@ -452,8 +473,9 @@ function screenSettings() {
     ]),
 
     h('section', {}, [h('h3', { text: 'Acerca de' }),
-      h('p', { class: 'hint', text: `${fmtNum(VOCAB.length)} palabras del HSK 3.0 (niveles 1 a 6). Vocabulario del syllabus CLEC 2025; definiciones en inglés de SayMei. Funciona sin conexión.` }),
+      h('p', { class: 'hint', text: `${fmtNum(VOCAB.length)} palabras del HSK 3.0 (niveles 1 a 6). Vocabulario del syllabus CLEC 2025; definiciones en inglés de SayMei y traducción al español. Funciona sin conexión.` }),
       h('p', { class: 'hint', text: 'Atajos: Espacio/Enter avanza, 1-4 eligen opción.' }),
+      versionEl(),
     ]),
   );
 }

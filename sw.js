@@ -1,9 +1,10 @@
 /* Service worker: precarga la app para uso sin conexion. */
-const CACHE = 'hsk-flash-v2';
+const CACHE = 'hsk-flash-v3';
 const ASSETS = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/app.js', 'js/vocab.js', 'js/store.js', 'js/srs.js', 'js/session.js',
   'js/modes.js', 'js/stats.js', 'js/ui.js', 'js/pinyin.js', 'js/wordsheet.js',
+  'js/vocab-es.js', 'js/lang.js', 'js/version.js',
   'icons/icon.svg', 'icons/favicon.svg',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png',
 ];

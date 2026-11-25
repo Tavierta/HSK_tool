@@ -1,6 +1,7 @@
 // Construccion de la cola de estudio y estado de la sesion.
 import { VOCAB, F } from './vocab.js';
 import { prog, rec, isLearned, settings } from './store.js';
+import { def } from './lang.js';
 
 export const MODES = {
   clasica: { label: 'Clásica', icon: '◧', dir: 'r', desc: 'Hanzi → tapas → me lo sé / no' },
@@ -83,15 +84,15 @@ export function buildQueue(cfg) {
 
 /** Distractores: misma categoria gramatical y nivel si se puede. */
 export function distractors(w, n, pool) {
-  const out = [], seen = new Set([w[F.N]]), seenTxt = new Set([w[F.EN]]);
+  const out = [], seen = new Set([w[F.N]]), seenTxt = new Set([def(w)]);
   const cand = pool && pool.length > n * 4 ? pool : VOCAB;
   const sameLvl = cand.filter((x) => x[F.LVL] === w[F.LVL] && x[F.N] !== w[F.N]);
   const pick = (list) => {
     let guard = 0;
     while (out.length < n && guard++ < 400 && list.length) {
       const x = list[(Math.random() * list.length) | 0];
-      if (seen.has(x[F.N]) || seenTxt.has(x[F.EN])) continue;
-      seen.add(x[F.N]); seenTxt.add(x[F.EN]); out.push(x);
+      if (seen.has(x[F.N]) || seenTxt.has(def(x))) continue;
+      seen.add(x[F.N]); seenTxt.add(def(x)); out.push(x);
     }
   };
   pick(sameLvl);
