@@ -1,0 +1,33 @@
+{
+  "name": "HSK Flash — vocabulario chino",
+  "short_name": "HSK Flash",
+  "description": "Flashcards de vocabulario chino mandarín HSK 1-6 con repetición espaciada. Funciona sin conexión.",
+  "lang": "es",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f5f2",
+  "theme_color": "#b83d26",
+  "categories": [
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Seguir estudiando",
+      "url": "./?go=study"
+    },
+    {
+      "name": "Progreso",
+      "url": "./?go=stats"
+    }
+  ]
+}
