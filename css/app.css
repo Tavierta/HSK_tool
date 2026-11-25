@@ -143,6 +143,10 @@ body.studying { padding-bottom: 0; }
 .c-ok { color: var(--c-ok); font-weight: 600; } .c-ko { color: var(--c-ko); font-weight: 600; }
 .mode-tag { display: flex; justify-content: space-between; align-items: center; color: var(--ink-2); font-size: 13px; margin: 10px 2px; }
 .mode-n { font-variant-numeric: tabular-nums; }
+.mode-right { display: flex; align-items: center; gap: 10px; }
+.py-toggle { font: inherit; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-2); cursor: pointer; }
+.py-toggle.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #fff); }
+.hide-fpy .front-py { display: none; }
 .card-area { flex: 1; display: flex; flex-direction: column; gap: 14px; }
 .face { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 26px 16px; text-align: center; }
 .hanzi { font-family: var(--cjk); font-weight: 500; line-height: 1.15; letter-spacing: .02em; }

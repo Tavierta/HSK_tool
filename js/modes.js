@@ -1,12 +1,15 @@
 // Vista de estudio: las 5 modalidades + flujo de la sesion.
 import { F } from './vocab.js';
 import { h, add, clear, pinyinEl, toast, fmtTime } from './ui.js';
-import { settings, flush, bumpDay, put, prog, STORE_S } from './store.js';
+import { settings, saveSettings, flush, bumpDay, put, prog, STORE_S } from './store.js';
 import { checkPinyin } from './pinyin.js';
 import { answer } from './srs.js';
 import { MODES, distractors, shuffle } from './session.js';
 import { wordSheet, levelBadge } from './wordsheet.js';
 import { def, def2, noteOf } from './lang.js';
+
+// Modalidades cuya cara frontal puede llevar pinyin (en 'pinyin' seria la respuesta).
+const PY_FRONT_MODES = new Set(['clasica', 'test4']);
 
 export class StudyView {
   constructor(session, hooks = {}) {
@@ -18,7 +21,7 @@ export class StudyView {
     this.modeTag = h('span', { class: 'mode-tag' });
     this.card = h('div', { class: 'card-area' });
     this.foot = h('div', { class: 'study-foot' });
-    this.root = h('div', { class: 'study' }, [
+    this.root = h('div', { class: 'study' + (settings.showPinyinFront ? '' : ' hide-fpy') }, [
       h('div', { class: 'study-head' }, [
         h('button', { class: 'icon-btn', 'aria-label': 'Salir de la sesión', html: '&larr;', onclick: () => this.exit() }),
         h('div', { class: 'sbar' }, [this.bar]),
@@ -112,12 +115,32 @@ export class StudyView {
     const m = MODES[step.mode];
     add(clear(this.modeTag),
       h('span', { text: `${m.icon} ${m.label}` }),
-      h('span', { class: 'mode-n', text: `${Math.min(this.s.i + 1, this.s.total)} / ${this.s.total}` }),
       step.retry ? h('span', { class: 'badge retry', text: 'repesca' }) : null,
+      h('span', { class: 'mode-right' }, [
+        PY_FRONT_MODES.has(step.mode) ? this.pinyinToggle() : null,
+        h('span', { class: 'mode-n', text: `${Math.min(this.s.i + 1, this.s.total)} / ${this.s.total}` }),
+      ]),
     );
     clear(this.card); clear(this.foot);
     this.locked = false;
     this['m_' + step.mode](step);
+  }
+
+  /** Interruptor de pinyin en la cara frontal; se guarda en Ajustes y no rehace la tarjeta. */
+  pinyinToggle() {
+    const on = () => settings.showPinyinFront;
+    const b = h('button', {
+      class: 'py-toggle' + (on() ? ' on' : ''), type: 'button',
+      'aria-pressed': on() ? 'true' : 'false',
+      title: 'Mostrar u ocultar el pinyin', text: 'pinyin',
+      onclick: async () => {
+        await saveSettings({ showPinyinFront: !on() });
+        b.classList.toggle('on', on());
+        b.setAttribute('aria-pressed', on() ? 'true' : 'false');
+        this.root.classList.toggle('hide-fpy', !on());
+      },
+    });
+    return b;
   }
 
   infoBtn(w) {
@@ -167,7 +190,7 @@ export class StudyView {
       h('div', { class: 'face' }, [
         this.infoBtn(w),
         this.hanziEl(w),
-        settings.showPinyinFront ? pinyinEl(w[F.PINYIN], 'pinyin') : null,
+        pinyinEl(w[F.PINYIN], 'pinyin front-py'),
       ]),
     );
     this.foot.append(h('button', {
@@ -213,7 +236,7 @@ export class StudyView {
     const w = step.words[0];
     this.choice(step, {
       prompt: h('div', { class: 'face' }, [this.infoBtn(w), this.hanziEl(w),
-        settings.showPinyinFront ? pinyinEl(w[F.PINYIN], 'pinyin') : null]),
+        pinyinEl(w[F.PINYIN], 'pinyin front-py')]),
       labelOf: (o) => h('span', { class: 'opt-en', text: def(o) }),
       dir: 'r', mode: 'test4',
     });
