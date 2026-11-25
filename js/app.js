@@ -417,7 +417,7 @@ function screenSettings() {
       row('Pinyin con colores por tono', toggle('tones'), '1º rojo · 2º verde · 3º azul · 4º morado · neutro gris'),
       row('Mostrar categoría gramatical', toggle('showPos')),
       row('Mostrar notas del HSK', toggle('showNote'), 'Avisos del tipo "more uses at HSK 4"'),
-      row('Pinyin visible en la cara frontal', toggle('showPinyinFront'), 'Hace las tarjetas más fáciles'),
+      row('Pinyin visible en la cara frontal', toggle('showPinyinFront'), 'Hace las tarjetas más fáciles. También se cambia durante la sesión con el botón «pinyin»'),
     ]),
 
     h('section', {}, [h('h3', { text: 'Idioma' }),

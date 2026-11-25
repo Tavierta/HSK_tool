@@ -1,5 +1,5 @@
 /* Service worker: precarga la app para uso sin conexion. */
-const CACHE = 'hsk-flash-v3';
+const CACHE = 'hsk-flash-v4';
 const ASSETS = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/app.js', 'js/vocab.js', 'js/store.js', 'js/srs.js', 'js/session.js',
