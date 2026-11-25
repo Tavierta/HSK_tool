@@ -3,6 +3,7 @@ import { F } from './vocab.js';
 import { h, pinyinEl, sheet, toast, fmtNum } from './ui.js';
 import { prog, rec, isLearned, settings, flush } from './store.js';
 import { mastery, setManual, toggleHard } from './srs.js';
+import { def, def2, noteOf } from './lang.js';
 
 export function levelBadge(w) {
   const extra = w[F.LVL20] ? ` · HSK 2.0: ${w[F.LVL20]}` : '';
@@ -78,11 +79,12 @@ export function wordSheet(word, onChange) {
       h('div', { class: 'ws-hanzi', text: w[F.HANZI] }),
       h('div', {}, [
         pinyinEl(w[F.PINYIN], 'pinyin big'),
-        h('div', { class: 'ws-en', text: w[F.EN] }),
+        h('div', { class: 'ws-en', text: def(w) }),
+        def2(w) ? h('div', { class: 'ws-en2', text: def2(w) }) : null,
         h('div', { class: 'ws-meta' }, [levelBadge(w), w[F.POS] && h('span', { class: 'badge pos', text: w[F.POS] })]),
       ]),
     ]),
-    w[F.NOTE] ? h('p', { class: 'note', text: '📌 ' + w[F.NOTE] }) : null,
+    w[F.NOTE] ? h('p', { class: 'note', text: '📌 ' + noteOf(w) }) : null,
     masteryBar(w),
     stats,
     actions,

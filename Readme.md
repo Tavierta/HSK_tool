@@ -5,7 +5,7 @@ propio dispositivo (IndexedDB). Sin cuentas, sin servidor, sin red.
 
 5.400 palabras del HSK 3.0 (syllabus CLEC 2025) embebidas en la app:
 HSK1 300 · HSK2 200 · HSK3 500 · HSK4 1000 · HSK5 1600 · HSK6 1800.
-Definiciones en inglés (SayMei).
+Definiciones en español e inglés (inglés de SayMei; español traducido a partir de él). El idioma se elige en Ajustes → Idioma.
 
 ## Instalar en el móvil
 
@@ -98,12 +98,16 @@ js/modes.js             las 5 modalidades
 js/stats.js             estadísticas y gráficos SVG
 js/pinyin.js            tonos, silabificación y comparación de respuestas
 js/wordsheet.js         ficha de palabra
+js/vocab-es.js          definiciones en español (alineadas con vocab.js)
+js/lang.js              idioma de las definiciones
+js/version.js           número de versión (se ve en Ajustes → Acerca de)
 js/app.js               navegación y pantallas
 ```
 
 Sin dependencias ni build: es JavaScript con módulos ES. Para cambiar algo,
-edita y recarga. Si tocas un archivo, sube la versión de `CACHE` en `sw.js` para
-que el service worker sirva la nueva.
+edita y recarga. Si tocas un archivo, sube la versión de `CACHE` en `sw.js` y
+`VERSION` en `js/version.js` para que el service worker sirva la nueva. En
+Ajustes → Acerca de se ve la versión y la caché activas.
 
 ## Límites conocidos
 
@@ -111,5 +115,6 @@ que el service worker sirva la nueva.
   `periodicSync`, que Android concede solo a apps instaladas y según uso. No es
   una alarma garantizada.
 - **Sin audio**, por decisión de diseño.
-- Las definiciones están en inglés, tal cual vienen en la fuente.
+- Las definiciones en español son una traducción de las inglesas: pueden tener
+  matices mejorables. El inglés se conserva tal cual viene en la fuente.
 - No hay escritura de hanzi a mano: la fuente no trae datos de trazos.

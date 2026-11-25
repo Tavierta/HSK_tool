@@ -6,6 +6,7 @@ import { checkPinyin } from './pinyin.js';
 import { answer } from './srs.js';
 import { MODES, distractors, shuffle } from './session.js';
 import { wordSheet, levelBadge } from './wordsheet.js';
+import { def, def2, noteOf } from './lang.js';
 
 export class StudyView {
   constructor(session, hooks = {}) {
@@ -137,12 +138,13 @@ export class StudyView {
   reveal(w) {
     return h('div', { class: 'reveal' }, [
       pinyinEl(w[F.PINYIN], 'pinyin big'),
-      h('div', { class: 'en', text: w[F.EN] }),
+      h('div', { class: 'en', text: def(w) }),
+      def2(w) ? h('div', { class: 'en2', text: def2(w) }) : null,
       h('div', { class: 'meta' }, [
         levelBadge(w),
         settings.showPos && w[F.POS] ? h('span', { class: 'badge pos', text: w[F.POS] }) : null,
       ]),
-      settings.showNote && w[F.NOTE] ? h('p', { class: 'note', text: '📌 ' + w[F.NOTE] }) : null,
+      settings.showNote && w[F.NOTE] ? h('p', { class: 'note', text: '📌 ' + noteOf(w) }) : null,
     ]);
   }
 
@@ -212,7 +214,7 @@ export class StudyView {
     this.choice(step, {
       prompt: h('div', { class: 'face' }, [this.infoBtn(w), this.hanziEl(w),
         settings.showPinyinFront ? pinyinEl(w[F.PINYIN], 'pinyin') : null]),
-      labelOf: (o) => h('span', { class: 'opt-en', text: o[F.EN] }),
+      labelOf: (o) => h('span', { class: 'opt-en', text: def(o) }),
       dir: 'r', mode: 'test4',
     });
   }
@@ -222,7 +224,7 @@ export class StudyView {
     this.choice(step, {
       prompt: h('div', { class: 'face' }, [
         this.infoBtn(w),
-        h('div', { class: 'prompt-en', text: w[F.EN] }),
+        h('div', { class: 'prompt-en', text: def(w) }),
         settings.showPos && w[F.POS] ? h('span', { class: 'badge pos', text: w[F.POS] }) : null,
       ]),
       labelOf: (o) => h('span', { class: 'opt-hanzi', text: o[F.HANZI] }),
@@ -241,7 +243,7 @@ export class StudyView {
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') check(); });
     this.card.append(
       h('div', { class: 'face' }, [this.infoBtn(w), this.hanziEl(w),
-        h('div', { class: 'en dim', text: w[F.EN] })]),
+        h('div', { class: 'en dim', text: def(w) })]),
       h('div', { class: 'pin-wrap' }, [input,
         h('div', { class: 'hint', text: settings.strictTones ? 'Tonos obligatorios: nǐhǎo o ni3hao3' : 'Los tonos son opcionales' })]),
     );
@@ -296,7 +298,7 @@ export class StudyView {
       onclick: (e) => tap(w, e.currentTarget, side),
     }, [side === 'l'
       ? h('span', { class: 'mt-hanzi', text: w[F.HANZI] })
-      : h('span', { class: 'mt-en', text: w[F.EN] })]);
+      : h('span', { class: 'mt-en', text: def(w) })]);
 
     left.forEach((w) => colL.append(tile(w, 'l')));
     right.forEach((w) => colR.append(tile(w, 'r')));
@@ -325,7 +327,7 @@ export class StudyView {
           this.foot.append(this.nextBtn(this.s.i + 1 >= this.s.total ? 'Terminar' : 'Siguiente'));
           this.card.append(this.feedback(true, ''), h('div', { class: 'match-done' },
             ws.map((x) => h('div', { class: 'md-row' }, [
-              h('span', { class: 'md-h', text: x[F.HANZI] }), pinyinEl(x[F.PINYIN]), h('span', { class: 'md-en', text: x[F.EN] }),
+              h('span', { class: 'md-h', text: x[F.HANZI] }), pinyinEl(x[F.PINYIN]), h('span', { class: 'md-en', text: def(x) }),
             ]))));
         }
       } else {

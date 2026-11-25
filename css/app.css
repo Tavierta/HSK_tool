@@ -153,6 +153,7 @@ body.studying { padding-bottom: 0; }
 .reveal { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; text-align: center; }
 .reveal .en { font-size: 18px; margin-top: 4px; }
 .en.dim { color: var(--ink-2); font-size: 15px; margin-top: 8px; }
+.reveal .en2, .ws-en2 { color: var(--ink-2); font-size: 14px; font-style: italic; margin-top: 2px; }
 .meta { display: flex; gap: 6px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
 .badge { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); font-weight: 600; }
 .badge.pos { font-family: ui-monospace, monospace; }
