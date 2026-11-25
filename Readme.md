@@ -1,4 +1,4 @@
-# HSK Flash — vocabulario chino mandarín HSK 1-6
+# HSK Máster — vocabulario chino mandarín HSK 1-6
 
 PWA instalable en Android. Funciona sin conexión y guarda todo el progreso en el
 propio dispositivo (IndexedDB). Sin cuentas, sin servidor, sin red.

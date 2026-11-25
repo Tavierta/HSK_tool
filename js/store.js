@@ -155,7 +155,7 @@ export async function exportJSON() {
 }
 
 export async function importJSON(data, mode = 'replace') {
-  if (!data || data.app !== 'hsk-flash') throw new Error('El archivo no es una copia de HSK Flash.');
+  if (!data || data.app !== 'hsk-flash') throw new Error('El archivo no es una copia de HSK Máster (o HSK Flash).');
   if (mode === 'replace') {
     await Promise.all([clearStore(STORE_P), clearStore(STORE_D), clearStore(STORE_S)]);
     if (data.progress) await putMany(STORE_P, data.progress);

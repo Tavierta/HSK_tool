@@ -83,7 +83,7 @@ async function screenHome() {
     h('header', { class: 'hero' }, [
       ring,
       h('div', {}, [
-        h('h1', { text: 'HSK Flash' }),
+        h('h1', { text: 'HSK Máster' }),
         h('p', { class: 'dim', text: st.streak > 0 ? `🔥 Racha de ${st.streak} día${st.streak > 1 ? 's' : ''}` : 'Completa la meta para empezar la racha' }),
         h('p', { class: 'dim small', text: `${fmtNum(st.learned)} de ${fmtNum(st.total)} palabras aprendidas` }),
       ]),
@@ -425,7 +425,7 @@ function screenSettings() {
       row('Mostrar también el otro idioma', toggle('showOtherLang'), 'Añade la traducción en el otro idioma en la tarjeta y en la ficha'),
     ]),
 
-    h('section', {}, [h('h3', { text: 'Aprendizaje' }),
+    h('details', { class: 'panel settings-fold' }, [h('summary', { text: 'Aprendizaje' }),
       row('Aciertos para dar por aprendida', num('threshold', 5, 50, 1), 'Contador acumulado global'),
       row('Mínimo por dirección', num('minDir', 0, 20, 1),
         'Aciertos mínimos en reconocimiento Y en producción. 0 lo desactiva'),
@@ -542,8 +542,8 @@ async function setupReminder() {
     if (d.c < S.settings.dailyGoal) {
       const reg = await navigator.serviceWorker?.ready.catch(() => null);
       const body = `Te faltan ${S.settings.dailyGoal - d.c} tarjetas para la meta de hoy.`;
-      if (reg) reg.showNotification('HSK Flash', { body, icon: 'icons/icon.svg', tag: 'hsk-daily' });
-      else new Notification('HSK Flash', { body });
+      if (reg) reg.showNotification('HSK Máster', { body, icon: 'icons/icon.svg', tag: 'hsk-daily' });
+      else new Notification('HSK Máster', { body });
     }
     setupReminder();
   }, at - now);

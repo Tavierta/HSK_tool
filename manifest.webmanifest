@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "HSK Flash — vocabulario chino",
-  "short_name": "HSK Flash",
+  "name": "HSK Máster — vocabulario chino",
+  "short_name": "HSK Máster",
   "description": "Flashcards de vocabulario chino mandarín HSK 1-6 con repetición espaciada. Funciona sin conexión.",
   "lang": "es",
   "start_url": ".",
